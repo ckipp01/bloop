@@ -46,6 +46,7 @@ import build.Dependencies.{
   Scala210Version,
   Scala211Version,
   Scala212Version,
+  Scala213Version,
   Sbt013Version,
   Sbt1Version
 }
@@ -202,7 +203,7 @@ lazy val jsonConfig213 = crossProject(JSPlatform, JVMPlatform)
     name := "bloop-config",
     unmanagedSourceDirectories in Compile +=
       Keys.baseDirectory.value / ".." / "src" / "main" / "scala-2.11-13",
-    scalaVersion := "2.13.1",
+    scalaVersion := Scala213Version,
     scalacOptions := {
       scalacOptions.value
         .filterNot(opt => opt == "-deprecation" || opt == "-Yno-adapted-args"),
@@ -327,6 +328,7 @@ lazy val bloopgun: Project = project
       "org.bouncycastle" % "bcprov-jdk15on" % "1.64",
       "org.bouncycastle" % "bcpkix-jdk15on" % "1.64"
     ),
+    crossScalaVersions := Seq(Scala212Version, Scala213Version),
     mainClass in GraalVMNativeImage := Some("bloop.bloopgun.Bloopgun"),
     graalVMNativeImageCommand := {
       val oldPath = graalVMNativeImageCommand.value
@@ -440,7 +442,8 @@ lazy val launcher: Project = project
     libraryDependencies ++= List(
       Dependencies.coursier,
       Dependencies.coursierCache
-    )
+    ),
+    crossScalaVersions := Seq(Scala212Version, Scala213Version)
   )
 
 lazy val launcherShaded = project
